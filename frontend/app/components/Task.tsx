@@ -31,10 +31,6 @@ const Task = ({ task }: { task: TaskInterface }) => {
       if (res.status == 200) {
         toast.success("Task Deleted Successfully");
         dispatch(removeTask(task._id));
-
-        setTimeout(() => {
-          router.refresh();
-        }, 1000);
       } else {
         toast.error("Something Went Wrong");
       }
