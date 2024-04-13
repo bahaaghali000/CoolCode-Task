@@ -11,7 +11,7 @@ export class LinkedinService {
 
       await driver.get('https://www.linkedin.com');
 
-      await driver.wait(until.titleIs('LinkedIn'), 30 * 60 * 60 * 1000);
+      await driver.wait(until.titleIs('LinkedIn'), 30  * 60 * 1000);
 
       const name = await driver
         .findElement(By.className('profile-name'))

@@ -7,12 +7,9 @@ export interface UserState {
   tasks: Task[];
 }
 
-const token = localStorage.getItem("coolcodeToken") || "";
-const user: any = JSON.parse(localStorage.getItem("coolcodeUser")!) || {};
-
 const initialState: UserState = {
-  token,
-  user,
+  token: "",
+  user: {},
   tasks: [],
 };
 
