@@ -8,58 +8,44 @@ import toast from "react-hot-toast";
 import { Task } from "@/lib/interfaces";
 
 const page = () => {
-  const [myTasks, setMyTasks] = useState([]);
-  const [memberTasks, setMemberTasks] = useState([]);
-  const [isMyTasks, setIsMyTasks] = useState(true);
+  const [myTasks, setMyTasks] = useState<Task[]>([]);
+  const [memberTasks, setMemberTasks] = useState<Task[]>([]);
+  const [isMyTasks, setIsMyTasks] = useState<boolean>(true);
+  const [render, setRender] = useState(false);
 
   const router = useRouter();
 
   const { token, user } = useAppSelector((state) => state.user);
+  const { tasks } = useAppSelector((state) => state.tasks);
 
   if (!token) {
     router.push("/auth/login");
   }
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/v1/tasks", {
+    const mytasks: Task[] = tasks.filter(
+      (task: Task) => task.author === user._id
+    );
+    const membertasks: Task[] = tasks.filter(
+      (task: Task) => task.author !== user._id
+    );
+
+    setMyTasks(mytasks);
+    setMemberTasks(membertasks);
+  }, [token]);
+
+  const handleLinkedin = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/linkedin/scrape`,
+        {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        });
-
-        const data = await res.json();
-        console.log(data);
-
-        const mytasks = data.filter((task: Task) => task.author === user._id);
-        const membertasks = data.filter(
-          (task: Task) => task.author !== user._id
-        );
-
-        setMyTasks(mytasks);
-        setMemberTasks(membertasks);
-        // dispatch(setTasks(data));
-      } catch (error: any) {
-        console.log(error);
-        toast.error(error.message);
-      }
-    };
-
-    user && fetchTasks();
-  }, [token]);
-
-  const handleLinkedin = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/linkedin/scrape", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        }
+      );
 
       const data = await res.json();
       console.log(data);
@@ -68,6 +54,14 @@ const page = () => {
       toast.error(error.message);
     }
   };
+
+  useEffect(() => {
+    setRender(true);
+  }, []);
+
+  if (!render) {
+    return;
+  }
 
   return (
     user && (

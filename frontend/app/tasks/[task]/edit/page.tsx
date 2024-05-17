@@ -1,7 +1,7 @@
 "use client";
 import Loader from "@/app/components/Loader";
 import AddMembers from "@/app/components/common/AddMembers";
-import { updateTask } from "@/lib/features/userSlice";
+import { updateTask } from "@/lib/features/tasksSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ const page = ({ params }: { params: { task: string } }) => {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:5000/api/v1/tasks/${params.task}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/tasks/${params.task}`,
         {
           method: "PATCH",
           headers: {
@@ -65,7 +65,7 @@ const page = ({ params }: { params: { task: string } }) => {
   useEffect(() => {
     const fetchTask = async () => {
       const res = await fetch(
-        `http://localhost:5000/api/v1/tasks/${params.task}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/tasks/${params.task}`,
         {
           method: "GET",
           headers: {

@@ -1,5 +1,5 @@
 "use client";
-import { removeTask } from "@/lib/features/userSlice";
+import { removeTask } from "@/lib/features/tasksSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { Task as TaskInterface, User } from "@/lib/interfaces";
 import Link from "next/link";
@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoIosMore } from "react-icons/io";
+
 const Task = ({ task }: { task: TaskInterface }) => {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -19,7 +20,7 @@ const Task = ({ task }: { task: TaskInterface }) => {
   const handleDelete = async () => {
     try {
       const res: any = await fetch(
-        `http://localhost:5000/api/v1/tasks/${task._id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/tasks/${task._id}`,
         {
           method: "DELETE",
           headers: {
@@ -94,8 +95,8 @@ const Task = ({ task }: { task: TaskInterface }) => {
               }}
               className={`rounded-full text-white  flex items-center justify-center border w-[35px] h-[35px]`}
             >
-              {user && user.fullname[0].toUpperCase()}
-              {user && user.fullname.split(" ")[1][0].toUpperCase()}
+              {user && user?.fullname[0]?.toUpperCase()}
+              {user && user?.fullname?.split(" ")[1][0].toUpperCase()}
             </div>
           ))}
         </div>

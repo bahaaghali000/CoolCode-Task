@@ -25,7 +25,7 @@ const AddMembers = ({ setFormData, formData }: any) => {
     const handler = setTimeout(async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/auth/?search=${search}`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/?search=${search}`,
           {
             method: "GET",
             headers: {

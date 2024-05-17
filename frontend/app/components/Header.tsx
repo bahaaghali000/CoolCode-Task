@@ -1,5 +1,6 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchInput from "./common/SearchInput";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setToken, setUser } from "@/lib/features/userSlice";
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({ showMenu, setShowMenu, setSearch }) => {
+  const [render, setRender] = useState(false);
   const { user } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
@@ -24,6 +26,15 @@ const Header: React.FC<Props> = ({ showMenu, setShowMenu, setSearch }) => {
     dispatch(setToken(""));
     dispatch(setUser(undefined));
   };
+
+  useEffect(() => {
+    setRender(true);
+  }, []);
+
+  if (!render) {
+    return;
+  }
+
   return (
     <div className="max-sm:px-1 px-10 flex justify-between items-center">
       <SearchInput setSearch={setSearch} />

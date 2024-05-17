@@ -1,5 +1,6 @@
 "use client";
-import { setTasks, setToken } from "@/lib/features/userSlice";
+import { setToken } from "@/lib/features/userSlice";
+import { setTasks } from "@/lib/features/tasksSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,11 +25,14 @@ const LoginPage = () => {
       const email = formData.get("email");
       const password = formData.get("password");
 
-      const res = await fetch(`http://localhost:5000/api/v1/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await res.json();
 
